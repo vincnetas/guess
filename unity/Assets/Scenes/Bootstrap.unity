@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc1cf6d8f8fe4564835d5729c9f2e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  serverUrl: ws://192.168.7.162:8091
+  serverUrl: wss://guess.vincentas.xyz
 --- !u!4 &829265187
 Transform:
   m_ObjectHideFlags: 0

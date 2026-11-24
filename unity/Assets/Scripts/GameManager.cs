@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private string serverUrl = "ws://192.168.7.162:8091";
+    [SerializeField] private string serverUrl = "wss://guess.vincentas.xyz";
 
     public NetworkClient Net { get; private set; }
     public event Action<string, JObject> OnMessage;

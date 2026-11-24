@@ -165,10 +165,12 @@ Waiting and Review screens are driven by `guess`, `waiting` and `review`.
 - A single HTTP server hosts both the WebSocket upgrade and the static web
   client. Non-upgrade requests are served from `WEB_DIR`; the web client is
   therefore same-origin and connects to `ws://<host>/` with no path.
-- Deployed with Docker Compose in `/opt/guess/`
+- Deployed with Docker Compose in `/opt/guess/` on `padirbtuves.lt`
   (`docker compose up -d --build`). The container listens on 8080 and is
   published on the host as `${PORT}` (default **8091**); `web/` is
   bind-mounted into the container at `/app/web` (`WEB_DIR`).
+- Exposed publicly at `https://guess.vincentas.xyz` via nginx (WebSocket
+  proxied) + Let's Encrypt.
 
 ### Environment variables
 
@@ -214,7 +216,7 @@ Waiting and Review screens are driven by `guess`, `waiting` and `review`.
   main thread.
 - Server URL is the serialized field `GameManager.serverUrl` (editable on the
   `GameManager` object in the `Bootstrap` scene), default
-  `ws://192.168.7.162:8091`.
+  `wss://guess.vincentas.xyz`.
 - Press Play in the `Bootstrap` scene to run the game.
 
 ### 7.2 Web (HTML / CSS / JS)

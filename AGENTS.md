@@ -11,7 +11,7 @@ guess/
 ├── unity/              # Unity 6 client project
 ├── web/                # web client (static HTML/JS, served by the backend)
 ├── docker-compose.yml  # single-service stack (builds ./backend)
-└── .env.example        # env template for the home server
+└── .env.example        # env template for the server
 ```
 
 ## Stack (decided)
@@ -27,8 +27,10 @@ guess/
   `deepseek-chat`, fast, used in the live deploy), or `ollama` (local
   `deepseek-r1:1.5b`, CPU-only, slow). See `.env.example`.
 - **Deploy:** local `docker compose up -d --build` in `/opt/guess/` on
-  `root@192.168.7.162` (no CI, no registry). Compose + `.env` sit at the
-  project root, alongside a copy of `backend/`.
+  `root@padirbtuves.lt` (no CI, no registry). Exposed publicly at
+  `https://guess.vincentas.xyz` via nginx + Let's Encrypt (WebSocket proxied).
+  Compose + `.env` sit at the project root, alongside a copy of `backend/` and
+  `web/`.
 
 ## Commands
 
@@ -55,13 +57,13 @@ npm start          # node dist/index.js
 ### Server access
 
 ```sh
-ssh root@192.168.7.162
+ssh root@padirbtuves.lt
 # deploy in /opt/guess/
 ```
 
 ### Run the game
 
-- **Web:** open `http://<server>:8091/` in a browser (served by the backend).
+- **Web:** open `https://guess.vincentas.xyz/` in a browser.
 - **Unity:** open `unity/` in Unity Hub and press Play in the `Bootstrap`
   scene (or build a player). It connects to `GameManager.serverUrl`.
 
@@ -85,7 +87,7 @@ simulate multiple players.
   `Bootstrap` owns the `NetworkClient`, state, and scene transitions; each
   screen has a controller (`HomeScreen`, `LobbyScreen`, …). Regenerate scenes
   via `Guess → Build All Scenes` (`SceneBuilder.Build`). Server URL is
-  `GameManager.serverUrl` (default `ws://192.168.7.162:8091`).
+  `GameManager.serverUrl` (default `wss://guess.vincentas.xyz`).
 - The Unity project is **2D** (`EditorSettings.defaultBehaviorMode =
   Mode2D`); `SceneBuilder.Build` enforces it. The Scene view then opens
   orthographic/2D instead of 3D.
@@ -93,9 +95,13 @@ simulate multiple players.
 ## Deploy checklist
 
 1. `rsync`/copy `backend/`, `web/`, `docker-compose.yml`, and `.env` to
-   `/opt/guess/` on the server.
+   `/opt/guess/` on `root@padirbtuves.lt`.
 2. On the server: `cd /opt/guess && docker compose up -d --build`.
 3. The `web/` folder is bind-mounted into the container (`./web:/app/web:ro`),
    so edits to the web client are live without a rebuild.
-4. Ollama is already running host-wide (`0.0.0.0:11434`); reach it from the
-   container via `host.docker.internal` (see `extra_hosts` in compose).
+4. nginx serves `https://guess.vincentas.xyz` and proxies to `127.0.0.1:8091`
+   with WebSocket upgrade headers (see
+   `/etc/nginx/sites-enabled/guess.vincentas.xyz.conf` and
+   `/etc/nginx/conf.d/guess-websocket-map.conf`). Certbot manages the TLS cert.
+5. Distortion runs in `openai` mode (DeepSeek API); Ollama is not required on
+   this host.
