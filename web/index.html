@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guess</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="banner" class="banner hidden"></div>
+
+    <section id="screen-home" class="screen">
+      <h1>GUESS</h1>
+      <p class="sub">A multiplayer word-distortion game</p>
+      <label for="home-name">Your name</label>
+      <input id="home-name" type="text" placeholder="Enter your name" autocomplete="off">
+      <label for="home-code">Join code</label>
+      <input id="home-code" type="text" placeholder="e.g. ABCD" autocomplete="off" maxlength="4">
+      <button id="btn-host" class="primary">Host Game</button>
+      <button id="btn-join">Join Game</button>
+      <p id="home-status" class="status"></p>
+    </section>
+
+    <section id="screen-lobby" class="screen hidden">
+      <h1 id="lobby-code">Join code: —</h1>
+      <div id="lobby-list" class="list"></div>
+      <button id="btn-ready" class="primary">Ready</button>
+      <button id="btn-start">Start Game</button>
+      <button id="btn-leave-lobby" class="danger">Leave</button>
+      <p id="lobby-status" class="status"></p>
+    </section>
+
+    <section id="screen-sentence" class="screen hidden">
+      <h2>Write a sentence</h2>
+      <p class="sub">Any sentence. Other players will see a distorted version of it.</p>
+      <input id="sentence-input" type="text" placeholder="Type your sentence here" autocomplete="off">
+      <button id="btn-sentence" class="primary">Submit</button>
+      <p id="sentence-status" class="status"></p>
+    </section>
+
+    <section id="screen-waiting" class="screen hidden">
+      <h2>Waiting for other players…</h2>
+    </section>
+
+    <section id="screen-guessing" class="screen hidden">
+      <h2 id="guess-progress">Guess 1 of 1</h2>
+      <p class="sub">Someone wrote (distorted):</p>
+      <p id="guess-distorted" class="distorted"></p>
+      <label for="guess-input">What was the original?</label>
+      <input id="guess-input" type="text" placeholder="Your guess" autocomplete="off">
+      <button id="btn-guess" class="primary">Submit</button>
+      <p id="guess-status" class="status"></p>
+    </section>
+
+    <section id="screen-review" class="screen hidden">
+      <h1>Round results</h1>
+      <div id="review-list" class="list"></div>
+      <button id="btn-play-again" class="primary">Play again</button>
+      <button id="btn-leave-review" class="danger">Leave</button>
+    </section>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

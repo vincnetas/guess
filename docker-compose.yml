@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: ./backend
+    container_name: guess-backend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8091}:8080"
+    environment:
+      PORT: "8080"
+      DISTORTION_MODE: ${DISTORTION_MODE:-mock}
+      MOCK_DISTORTED: ${MOCK_DISTORTED:-A completely different sentence with swapped words.}
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-deepseek-r1:1.5b}
+      DISTORTION_API_KEY: ${DISTORTION_API_KEY:-}
+      DISTORTION_BASE_URL: ${DISTORTION_BASE_URL:-https://api.deepseek.com}
+      DISTORTION_MODEL: ${DISTORTION_MODEL:-deepseek-chat}
+      MIN_PLAYERS: ${MIN_PLAYERS:-2}
+      MAX_PLAYERS: ${MAX_PLAYERS:-8}
+      WEB_DIR: /app/web
+    volumes:
+      - ./web:/app/web:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    logging:
+      options:
+        max-size: "3m"
+        max-file: "1"
